@@ -40,6 +40,7 @@ export namespace Commands {
     export const RunToLine = 'python.datascience.runtoline';
     export const RunFromLine = 'python.datascience.runfromline';
     export const RunCell = 'python.datascience.runcell';
+    export const InsertCellBelowPosition = 'python.datascience.insertCellBelowPosition';
     export const RunCurrentCell = 'python.datascience.runcurrentcell';
     export const RunCurrentCellAdvance = 'python.datascience.runcurrentcelladvance';
     export const ShowHistoryPane = 'python.datascience.showhistorypane';

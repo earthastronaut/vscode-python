@@ -359,6 +359,51 @@ export class CodeWatcher implements ICodeWatcher {
         );
     }
 
+    public async insertCellBelowPosition(position?: Position): Promise<void> {
+        return this.insertCell(position, 1);
+    }
+
+    /* insertCell
+     *
+     * Inserts a cell at current line defined as two new lines and then
+     * moves cursor to within the cell.
+     * ```
+     * # %%
+     *
+     * ```
+     */
+    public async insertCell(position?: Position, lineOffset: number = 0): Promise<void> {
+        const editor = this.documentManager.activeTextEditor;
+        if (!editor || !editor.document) {
+            return Promise.resolve();
+        }
+
+        if (position === undefined) {
+            position = editor.selection.start;
+        }
+        if (!position) {
+            return Promise.resolve();
+        }
+
+        if (lineOffset === undefined) {
+            lineOffset = 0;
+        }
+        const startPosition = new Position(position.line + lineOffset, 0);
+
+        const cellDelineator = this.getDefaultCellMarker(editor.document.uri);
+        let newCell = `${cellDelineator}\n\n`;
+        if (startPosition.line === editor.document.lineCount) {
+            newCell = `\n${cellDelineator}\n`;
+        }
+
+        editor.edit((editBuilder) => {
+            editBuilder.insert(startPosition, newCell);
+        });
+
+        const newCursorPosition = new Position(startPosition.line + 1, 0);
+        return this.advanceToRange(new Range(newCursorPosition, newCursorPosition));
+    }
+
     private getDefaultCellMarker(resource: Resource): string {
         return (
             this.configService.getSettings(resource).datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker
