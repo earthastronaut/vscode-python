@@ -114,6 +114,11 @@
                 "when": "editorTextFocus && editorLangId == python && !findInputFocussed && !replaceInputFocussed && python.datascience.ownsSelection && python.datascience.featureenabled && !notebookEditorFocused"
             },
             {
+                "command": "python.datascience.insertCellBelowCurrent",
+                "key": "ctrl+shift+a",
+                "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
+            },
+            {
                 "command": "python.datascience.insertCellBelowPosition",
                 "key": "ctrl+shift+i",
                 "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
@@ -494,6 +499,11 @@
                 "category": "Python"
             },
             {
+                "command": "python.datascience.insertCellBelowCurrent",
+                "title": "%python.command.python.datascience.insertCellBelowCurrent.title%",
+                "category": "Python"
+            },
+            {
                 "command": "python.datascience.insertCellBelowPosition",
                 "title": "%python.command.python.datascience.insertCellBelowPosition.title%",
                 "category": "Python"
@@ -769,6 +779,11 @@
                 },
                 {
                     "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
+                    "command": "python.datascience.insertCellBelowCurrent",
+                    "group": "Python2"
+                },
+                {
+                    "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
                     "command": "python.datascience.insertCellBelowPosition",
                     "group": "Python2"
                 },
@@ -919,6 +934,12 @@
                     "title": "Open",
                     "category": "Python",
                     "when": "config.noExists"
+                },
+                {
+                    "command": "python.datascience.insertCellBelowCurrent",
+                    "title": "%python.command.python.datascience.insertCellBelowCurrent.title%",
+                    "category": "Python",
+                    "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
                 },
                 {
                     "command": "python.datascience.insertCellBelowPosition",

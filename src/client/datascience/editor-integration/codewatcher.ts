@@ -404,6 +404,13 @@ export class CodeWatcher implements ICodeWatcher {
         return this.advanceToRange(new Range(newCursorPosition, newCursorPosition));
     }
 
+    public async insertCellBelowCurrent(): Promise<void> {
+        const currentCellLens = this.getCurrentSelectionCellLens();
+        if (currentCellLens) {
+            return this.insertCellBelowPosition(currentCellLens.range.end);
+        }
+    }
+
     private getDefaultCellMarker(resource: Resource): string {
         return (
             this.configService.getSettings(resource).datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker
@@ -504,10 +511,27 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    private getCurrentSelection(): Range | undefined {
+        const editor = this.documentManager.activeTextEditor;
+        if (editor) {
+            return editor.selection;
+        }
+    }
+
     private getCurrentCellLens(pos: Position): CodeLens | undefined {
         return this.codeLenses.find(
             (l) => l.range.contains(pos) && l.command !== undefined && l.command.command === Commands.RunCell
         );
+    }
+
+    private getCurrentSelectionCellLens(): CodeLens | undefined {
+        const selection = this.getCurrentSelection();
+        if (selection) {
+            const startPosition = selection.start;
+            if (startPosition) {
+                return this.getCurrentCellLens(startPosition);
+            }
+        }
     }
 
     private getNextCellLens(pos: Position): CodeLens | undefined {

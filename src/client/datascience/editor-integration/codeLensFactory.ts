@@ -343,6 +343,7 @@ export class CodeLensFactory implements ICodeLensFactory, IInteractiveWindowList
                 }
                 return this.generateCodeLens(range, Commands.DebugStop, localize.DataScience.debugStopCommandTitle());
 
+            case Commands.InsertCellBelowCurrent:
             case Commands.InsertCellBelowPosition:
             case Commands.RunCurrentCell:
             case Commands.RunCell:
