@@ -55,6 +55,7 @@
     "python.command.python.datascience.selectCell.title": "Select Cell",
     "python.command.python.datascience.selectCellContents.title": "Select Cell Contents",
     "python.command.python.datascience.goToCellStart.title": "Go To Cell Start",
+    "python.command.python.datascience.goToCellEnd.title": "Go To Cell End",
     "python.command.python.datascience.runcurrentcell.title": "Run Current Cell",
     "python.command.python.datascience.runcurrentcelladvance.title": "Run Current Cell And Advance",
     "python.command.python.datascience.execSelectionInteractive.title": "Run Selection/Line in Python Interactive Window",

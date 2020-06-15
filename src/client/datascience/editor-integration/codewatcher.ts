@@ -461,8 +461,16 @@ export class CodeWatcher implements ICodeWatcher {
     public async goToCellStart(position?: Position): Promise<void> {
         const cellLensIndex = this.getCellLensIndex(position);
         const editor = this.documentManager.activeTextEditor;
-        if (editor && cellLensIndex) {
+        if (editor && cellLensIndex !== undefined) {
             return this.goToCellRelativeLocation(cellLensIndex, editor, 1, 0);
+        }
+    }
+
+    public async goToCellEnd(position?: Position): Promise<void> {
+        const cellLensIndex = this.getCellLensIndex(position);
+        const editor = this.documentManager.activeTextEditor;
+        if (editor && cellLensIndex !== undefined) {
+            return this.goToCellRelativeLocation(cellLensIndex, editor, -1, -1);
         }
     }
 
@@ -508,12 +516,9 @@ export class CodeWatcher implements ICodeWatcher {
         const cellLength = cellLens.range.end.line - cellLens.range.start.line + 1;
         relativeLine = this.getIndex(relativeLine, cellLength);
         const docLine = cellLens.range.start.line + relativeLine;
-        const lineLength = textDocument.lineAt(docLine).range.end.character;
-        if (lineLength === 0) {
-            return new Position(docLine, 0);
-        } else {
-            return new Position(docLine, this.getIndex(relativeCharacter, lineLength));
-        }
+        const lineLength = textDocument.lineAt(docLine).range.end.character + 1;
+        relativeCharacter = this.getIndex(relativeCharacter, lineLength);
+        return new Position(docLine, relativeCharacter);
     }
 
     private async goToCellRelativeLocation(

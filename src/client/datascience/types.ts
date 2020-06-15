@@ -623,6 +623,7 @@ export interface ICodeWatcher {
     selectCell(): Promise<void>;
     selectCellContents(): Promise<void>;
     goToCellStart(): Promise<void>;
+    goToCellEnd(): Promise<void>;
     runCurrentCell(): Promise<void>;
     runCurrentCellAndAdvance(): Promise<void>;
     runSelectionOrLine(activeEditor: TextEditor | undefined): Promise<void>;
