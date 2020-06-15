@@ -418,6 +418,13 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async moveCellUp(): Promise<void> {
+        const cellLensIndex = this.getCellLensIndex();
+        if (!cellLensIndex) {
+            return Promise.resolve();
+        }
+    }
+
     public async selectCell(): Promise<void> {
         const currentCellLens = this.getCellLens();
         const editor = this.documentManager.activeTextEditor;
@@ -437,13 +444,17 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
-    public async deleteCell(): Promise<void> {
-        const currentCellLensSelectionRange = this.getCurrentCellLensSelectionRange();
+    public async deleteCell(position?: Position): Promise<void> {
         const editor = this.documentManager.activeTextEditor;
-        if (editor && currentCellLensSelectionRange) {
-            editor.edit((editBuilder) => {
-                editBuilder.replace(currentCellLensSelectionRange, '');
-            });
+        const cellLensIndex = this.getCellLensIndex(position);
+        if (editor && cellLensIndex) {
+            const cellLens = this.codeLenses[cellLensIndex];
+            const cellLensRange = this.getCellLensRange(cellLens);
+            if (cellLensRange) {
+                editor.edit((editBuilder) => {
+                    editBuilder.replace(cellLensRange, '');
+                });
+            }
         }
     }
 
@@ -574,6 +585,25 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    private getCellLensIndex(position?: Position): number | undefined {
+        if (!position) {
+            const selection = this.getCurrentSelection();
+            if (!selection) {
+                return;
+            }
+            position = selection.start;
+        }
+        if (position) {
+            return this._getCellLensIndex(position);
+        }
+    }
+
+    private _getCellLensIndex(position: Position): number | undefined {
+        return this.codeLenses.findIndex(
+            (l) => l.range.contains(position) && l.command !== undefined && l.command.command === Commands.RunCell
+        );
+    }
+
     private getNextCellLens(pos: Position): CodeLens | undefined {
         const currentIndex = this.codeLenses.findIndex(
             (l) => l.range.contains(pos) && l.command !== undefined && l.command.command === Commands.RunCell
@@ -587,22 +617,21 @@ export class CodeWatcher implements ICodeWatcher {
         return undefined;
     }
 
-    private getCurrentCellLensSelectionRange(): Range | undefined {
-        const currentCellLens = this.getCellLens();
+    private getCellLensRange(codeLens: CodeLens): Range | undefined {
         const editor = this.documentManager.activeTextEditor;
-        if (editor && currentCellLens) {
+        if (editor && codeLens) {
             // Start of the document should start at position 0, 0 and end one line ahead.
             let startLineNumber = 0;
             let startCharacterNumber = 0;
-            let endLineNumber = currentCellLens.range.end.line + 1;
+            let endLineNumber = codeLens.range.end.line + 1;
             let endCharacterNumber = 0;
             // Anywhere else in the document should start at the end of line before the
             // cell and end at the last character of the cell.
-            if (currentCellLens.range.start.line > 0) {
-                startLineNumber = currentCellLens.range.start.line - 1;
+            if (codeLens.range.start.line > 0) {
+                startLineNumber = codeLens.range.start.line - 1;
                 startCharacterNumber = editor.document.lineAt(startLineNumber).range.end.character;
-                endLineNumber = currentCellLens.range.end.line;
-                endCharacterNumber = currentCellLens.range.end.character;
+                endLineNumber = codeLens.range.end.line;
+                endCharacterNumber = codeLens.range.end.character;
             }
             return new Range(
                 new Position(startLineNumber, startCharacterNumber),
