@@ -560,13 +560,17 @@ export class CodeWatcher implements ICodeWatcher {
         );
     }
 
-    private getCurrentSelectionCellLens(): CodeLens | undefined {
-        const selection = this.getCurrentSelection();
-        if (selection) {
-            const startPosition = selection.start;
-            if (startPosition) {
-                return this.getCurrentCellLens(startPosition);
+    private getCurrentSelectionCellLens(position?: Position): CodeLens | undefined {
+        if (!position) {
+            const selection = this.getCurrentSelection();
+            if (!selection) {
+                return;
             }
+            position = selection.start;
+        }
+
+        if (position) {
+            return this.getCurrentCellLens(position);
         }
     }
 
