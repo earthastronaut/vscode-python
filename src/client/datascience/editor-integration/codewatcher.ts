@@ -411,6 +411,13 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async insertCellAboveCurrent(): Promise<void> {
+        const currentCellLens = this.getCurrentSelectionCellLens();
+        if (currentCellLens) {
+            return this.insertCell(currentCellLens.range.start);
+        }
+    }
+
     private getDefaultCellMarker(resource: Resource): string {
         return (
             this.configService.getSettings(resource).datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker

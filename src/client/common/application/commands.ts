@@ -58,6 +58,7 @@ interface ICommandNameWithoutArgumentTypeMapping {
     [DSCommands.UndoCells]: [];
     [DSCommands.RedoCells]: [];
     [DSCommands.RemoveAllCells]: [];
+    [DSCommands.InsertCellAboveCurrent]: [];
     [DSCommands.InsertCellBelowPosition]: [];
     [DSCommands.InsertCellBelowCurrent]: [];
     [DSCommands.InterruptKernel]: [];
