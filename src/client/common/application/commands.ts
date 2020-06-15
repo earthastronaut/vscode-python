@@ -50,6 +50,7 @@ interface ICommandNameWithoutArgumentTypeMapping {
     [Commands.Tests_Ask_To_Stop_Test]: [];
     [Commands.Tests_Discovering]: [];
     [Commands.PickLocalProcess]: [];
+    [DSCommands.DeleteCell]: [];
     [DSCommands.RunCurrentCell]: [];
     [DSCommands.RunCurrentCellAdvance]: [];
     [DSCommands.ExecSelectionInInteractiveWindow]: [];

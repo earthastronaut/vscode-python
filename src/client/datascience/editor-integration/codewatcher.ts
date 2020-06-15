@@ -426,6 +426,16 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async deleteCell(): Promise<void> {
+        const currentCellLensSelectionRange = this.getCurrentCellLensSelectionRange();
+        const editor = this.documentManager.activeTextEditor;
+        if (editor && currentCellLensSelectionRange) {
+            editor.edit((editBuilder) => {
+                editBuilder.replace(currentCellLensSelectionRange, '');
+            });
+        }
+    }
+
     private getDefaultCellMarker(resource: Resource): string {
         return (
             this.configService.getSettings(resource).datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker
@@ -560,6 +570,30 @@ export class CodeWatcher implements ICodeWatcher {
             );
         }
         return undefined;
+    }
+
+    private getCurrentCellLensSelectionRange(): Range | undefined {
+        const currentCellLens = this.getCurrentSelectionCellLens();
+        const editor = this.documentManager.activeTextEditor;
+        if (editor && currentCellLens) {
+            // Start of the document should start at position 0, 0 and end one line ahead.
+            let startLineNumber = 0;
+            let startCharacterNumber = 0;
+            let endLineNumber = currentCellLens.range.end.line + 1;
+            let endCharacterNumber = 0;
+            // Anywhere else in the document should start at the end of line before the
+            // cell and end at the last character of the cell.
+            if (currentCellLens.range.start.line > 0) {
+                startLineNumber = currentCellLens.range.start.line - 1;
+                startCharacterNumber = editor.document.lineAt(startLineNumber).range.end.character;
+                endLineNumber = currentCellLens.range.end.line;
+                endCharacterNumber = currentCellLens.range.end.character;
+            }
+            return new Range(
+                new Position(startLineNumber, startCharacterNumber),
+                new Position(endLineNumber, endCharacterNumber)
+            );
+        }
     }
 
     private async runFileInteractiveInternal(debug: boolean) {

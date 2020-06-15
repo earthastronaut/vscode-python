@@ -53,6 +53,7 @@ export class CommandRegistry implements IDisposable {
         this.commandLineCommand.register();
         this.serverSelectedCommand.register();
         this.kernelSwitcherCommand.register();
+        this.registerCommand(Commands.DeleteCell, this.deleteCell);
         this.registerCommand(Commands.InsertCellAboveCurrent, this.insertCellAboveCurrent);
         this.registerCommand(Commands.InsertCellBelowPosition, this.insertCellBelowPosition);
         this.registerCommand(Commands.InsertCellBelowCurrent, this.insertCellBelowCurrent);
@@ -166,6 +167,15 @@ export class CommandRegistry implements IDisposable {
         }
         if (codeWatcher) {
             return codeWatcher.debugFileInteractive();
+        } else {
+            return Promise.resolve();
+        }
+    }
+
+    private deleteCell(): Promise<void> {
+        const activeCodeWatcher = this.getCurrentCodeWatcher();
+        if (activeCodeWatcher) {
+            return activeCodeWatcher.deleteCell();
         } else {
             return Promise.resolve();
         }

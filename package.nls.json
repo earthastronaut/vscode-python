@@ -46,6 +46,7 @@
     "python.command.python.datascience.debugstepover.title": "Step Over",
     "python.command.python.datascience.debugcontinue.title": "Continue",
     "python.command.python.datascience.debugstop.title": "Stop",
+    "python.command.python.datascience.deleteCell.title": "Delete Cell",
     "python.command.python.datascience.runtoline.title": "Run To Line in Python Interactive Window",
     "python.command.python.datascience.runfromline.title": "Run From Line in Python Interactive Window",
     "python.command.python.datascience.insertCellAboveCurrent.title": "Insert Cell Above Current",

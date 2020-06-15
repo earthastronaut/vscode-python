@@ -56,6 +56,7 @@ export namespace Commands {
     export const ExportFileAndOutputAsNotebook = 'python.datascience.exportfileandoutputasnotebook';
     export const UndoCells = 'python.datascience.undocells';
     export const RedoCells = 'python.datascience.redocells';
+    export const DeleteCell = 'python.datascience.deleteCell';
     export const RemoveAllCells = 'python.datascience.removeallcells';
     export const InterruptKernel = 'python.datascience.interruptkernel';
     export const RestartKernel = 'python.datascience.restartkernel';
