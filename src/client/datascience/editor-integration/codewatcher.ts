@@ -458,6 +458,92 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async goToCellStart(position?: Position): Promise<void> {
+        const cellLensIndex = this.getCellLensIndex(position);
+        const editor = this.documentManager.activeTextEditor;
+        if (editor && cellLensIndex) {
+            return this.goToCellRelativeLocation(cellLensIndex, editor, 1, 0);
+        }
+    }
+
+    private async ensureMinCellLength(cellLensIndex: number): Promise<boolean | void> {
+        const cellLens = this.codeLenses[cellLensIndex];
+        if (cellLens.range.start.line === cellLens.range.end.line) {
+            // insert line
+            const editor = this.documentManager.activeTextEditor;
+            if (editor) {
+                return editor.edit((editBuilder) => {
+                    editBuilder.insert(cellLens.range.end, '\n');
+                });
+            }
+        }
+        return Promise.resolve();
+    }
+
+    private getIndex(index: number, length: number): number {
+        if (length <= 0) {
+            throw new RangeError(`Length must be > 0 not ${length}`);
+        }
+        // negative index count back from length
+        if (index < 0) {
+            index += length;
+        }
+        // bounded index
+        if (index < 0) {
+            return 0;
+        } else if (index >= length) {
+            return length - 1;
+        } else {
+            return index;
+        }
+    }
+
+    private getCellDocumentPosition(
+        cellLensIndex: number,
+        textDocument: TextDocument,
+        relativeLine: number = 0,
+        relativeCharacter: number = 0
+    ): Position {
+        const cellLens = this.codeLenses[cellLensIndex];
+        const cellLength = cellLens.range.end.line - cellLens.range.start.line + 1;
+        relativeLine = this.getIndex(relativeLine, cellLength);
+        const docLine = cellLens.range.start.line + relativeLine;
+        const lineLength = textDocument.lineAt(docLine).range.end.character;
+        if (lineLength === 0) {
+            return new Position(docLine, 0);
+        } else {
+            return new Position(docLine, this.getIndex(relativeCharacter, lineLength));
+        }
+    }
+
+    private async goToCellRelativeLocation(
+        cellLensIndex: number,
+        textEditor: TextEditor,
+        relativeLine: number = 0,
+        relativeCharacter: number = 0
+    ): Promise<void> {
+        const promise = this.ensureMinCellLength(cellLensIndex);
+        promise
+            .then((minCellLineAdded: boolean | void) => {
+                if (minCellLineAdded) {
+                    // line added
+                    const cellLens = this.codeLenses[cellLensIndex];
+                    const selectPosition = new Position(cellLens.range.start.line + 1, 0);
+                    textEditor.selection = new Selection(selectPosition, selectPosition);
+                } else {
+                    // cell long enough
+                    const selectPosition = this.getCellDocumentPosition(
+                        cellLensIndex,
+                        textEditor.document,
+                        relativeLine,
+                        relativeCharacter
+                    );
+                    textEditor.selection = new Selection(selectPosition, selectPosition);
+                }
+            })
+            .catch(null);
+    }
+
     private getDefaultCellMarker(resource: Resource): string {
         return (
             this.configService.getSettings(resource).datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker

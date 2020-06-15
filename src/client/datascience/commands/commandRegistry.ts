@@ -64,6 +64,7 @@ export class CommandRegistry implements IDisposable {
         this.registerCommand(Commands.ExecSelectionInInteractiveWindow, this.runSelectionOrLine);
         this.registerCommand(Commands.SelectCell, this.selectCell);
         this.registerCommand(Commands.SelectCellContents, this.selectCellContents);
+        this.registerCommand(Commands.GoToCellStart, this.goToCellStart);
         this.registerCommand(Commands.RunAllCellsAbove, this.runAllCellsAbove);
         this.registerCommand(Commands.RunCellAndAllBelow, this.runCellAndAllBelow);
         this.registerCommand(Commands.RunAllCellsAbovePalette, this.runAllCellsAboveFromCursor);
@@ -194,6 +195,14 @@ export class CommandRegistry implements IDisposable {
         const activeCodeWatcher = this.getCurrentCodeWatcher();
         if (activeCodeWatcher) {
             return activeCodeWatcher.selectCellContents();
+        } else {
+            return Promise.resolve();
+        }
+    }
+    private async goToCellStart(): Promise<void> {
+        const activeCodeWatcher = this.getCurrentCodeWatcher();
+        if (activeCodeWatcher) {
+            return activeCodeWatcher.goToCellStart();
         } else {
             return Promise.resolve();
         }

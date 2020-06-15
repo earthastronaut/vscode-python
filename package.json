@@ -138,6 +138,11 @@
                 "key": "ctrl+shift+w",
                 "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
             },
+           {
+                "command": "python.datascience.goToCellStart",
+                "key": "ctrl+shift+;",
+                "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
+            },
             {
                 "command": "python.datascience.deleteCell",
                 "key": "ctrl+shift+d",
@@ -544,6 +549,11 @@
                 "category": "Python"
             },
             {
+                "command": "python.datascience.goToCellStart",
+                "title": "%python.command.python.datascience.goToCellStart.title%",
+                "category": "Python"
+            },
+            {
                 "command": "python.datascience.deleteCell",
                 "title": "%python.command.python.datascience.deleteCell.title%",
                 "category": "Python"
@@ -844,6 +854,11 @@
                 },
                 {
                     "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
+                    "command": "python.datascience.goToCellStart",
+                    "group": "Python2"
+                },
+                {
+                    "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
                     "command": "python.datascience.deleteCell",
                     "group": "Python2"
                 },
@@ -1022,6 +1037,12 @@
                 {
                     "command": "python.datascience.selectCellContents",
                     "title": "%python.command.python.datascience.selectCellContents.title%",
+                    "category": "Python",
+                    "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
+                },
+                {
+                    "command": "python.datascience.goToCellStart",
+                    "title": "%python.command.python.datascience.goToCellStart.title%",
                     "category": "Python",
                     "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
                 },

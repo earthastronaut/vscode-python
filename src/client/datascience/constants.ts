@@ -42,6 +42,7 @@ export namespace Commands {
     export const RunCell = 'python.datascience.runcell';
     export const SelectCell = 'python.datascience.selectCell';
     export const SelectCellContents = 'python.datascience.selectCellContents';
+    export const GoToCellStart = 'python.datascience.goToCellStart';
     export const InsertCellAboveCurrent = 'python.datascience.insertCellAboveCurrent';
     export const InsertCellBelowPosition = 'python.datascience.insertCellBelowPosition';
     export const InsertCellBelowCurrent = 'python.datascience.insertCellBelowCurrent';
