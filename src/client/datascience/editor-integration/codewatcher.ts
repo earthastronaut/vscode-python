@@ -426,6 +426,17 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async selectCellContents(): Promise<void> {
+        const currentCellLens = this.getCurrentSelectionCellLens();
+        const editor = this.documentManager.activeTextEditor;
+        if (editor && currentCellLens) {
+            editor.selection = new Selection(
+                new Position(currentCellLens.range.start.line + 1, 0),
+                currentCellLens.range.end
+            );
+        }
+    }
+
     public async deleteCell(): Promise<void> {
         const currentCellLensSelectionRange = this.getCurrentCellLensSelectionRange();
         const editor = this.documentManager.activeTextEditor;
