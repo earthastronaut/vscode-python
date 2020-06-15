@@ -418,6 +418,14 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async selectCurrentCell(): Promise<void> {
+        const currentCellLens = this.getCurrentSelectionCellLens();
+        const editor = this.documentManager.activeTextEditor;
+        if (editor && currentCellLens) {
+            editor.selection = new Selection(currentCellLens.range.start, currentCellLens.range.end);
+        }
+    }
+
     private getDefaultCellMarker(resource: Resource): string {
         return (
             this.configService.getSettings(resource).datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker
