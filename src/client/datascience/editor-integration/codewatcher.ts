@@ -405,21 +405,21 @@ export class CodeWatcher implements ICodeWatcher {
     }
 
     public async insertCellBelowCurrent(): Promise<void> {
-        const currentCellLens = this.getCurrentSelectionCellLens();
+        const currentCellLens = this.getCellLens();
         if (currentCellLens) {
             return this.insertCellBelowPosition(currentCellLens.range.end);
         }
     }
 
     public async insertCellAboveCurrent(): Promise<void> {
-        const currentCellLens = this.getCurrentSelectionCellLens();
+        const currentCellLens = this.getCellLens();
         if (currentCellLens) {
             return this.insertCell(currentCellLens.range.start);
         }
     }
 
     public async selectCell(): Promise<void> {
-        const currentCellLens = this.getCurrentSelectionCellLens();
+        const currentCellLens = this.getCellLens();
         const editor = this.documentManager.activeTextEditor;
         if (editor && currentCellLens) {
             editor.selection = new Selection(currentCellLens.range.start, currentCellLens.range.end);
@@ -427,7 +427,7 @@ export class CodeWatcher implements ICodeWatcher {
     }
 
     public async selectCellContents(): Promise<void> {
-        const currentCellLens = this.getCurrentSelectionCellLens();
+        const currentCellLens = this.getCellLens();
         const editor = this.documentManager.activeTextEditor;
         if (editor && currentCellLens) {
             editor.selection = new Selection(
@@ -560,7 +560,7 @@ export class CodeWatcher implements ICodeWatcher {
         );
     }
 
-    private getCurrentSelectionCellLens(position?: Position): CodeLens | undefined {
+    private getCellLens(position?: Position): CodeLens | undefined {
         if (!position) {
             const selection = this.getCurrentSelection();
             if (!selection) {
@@ -588,7 +588,7 @@ export class CodeWatcher implements ICodeWatcher {
     }
 
     private getCurrentCellLensSelectionRange(): Range | undefined {
-        const currentCellLens = this.getCurrentSelectionCellLens();
+        const currentCellLens = this.getCellLens();
         const editor = this.documentManager.activeTextEditor;
         if (editor && currentCellLens) {
             // Start of the document should start at position 0, 0 and end one line ahead.
