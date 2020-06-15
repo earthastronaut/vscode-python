@@ -129,7 +129,7 @@
                 "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
             },
             {
-                "command": "python.datascience.selectCurrentCell",
+                "command": "python.datascience.selectCell",
                 "key": "ctrl+shift+s",
                 "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
             },
@@ -534,8 +534,8 @@
                 "category": "Python"
             },
             {
-                "command": "python.datascience.selectCurrentCell",
-                "title": "%python.command.python.datascience.selectCurrentCell.title%",
+                "command": "python.datascience.selectCell",
+                "title": "%python.command.python.datascience.selectCell.title%",
                 "category": "Python"
             },
             {
@@ -834,7 +834,7 @@
                 },
                 {
                     "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
-                    "command": "python.datascience.selectCurrentCell",
+                    "command": "python.datascience.selectCell",
                     "group": "Python2"
                 },
                 {
@@ -1014,8 +1014,8 @@
                     "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
                 },
                 {
-                    "command": "python.datascience.selectCurrentCell",
-                    "title": "%python.command.python.datascience.selectCurrentCell.title%",
+                    "command": "python.datascience.selectCell",
+                    "title": "%python.command.python.datascience.selectCell.title%",
                     "category": "Python",
                     "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
                 },

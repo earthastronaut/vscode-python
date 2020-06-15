@@ -418,7 +418,7 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
-    public async selectCurrentCell(): Promise<void> {
+    public async selectCell(): Promise<void> {
         const currentCellLens = this.getCurrentSelectionCellLens();
         const editor = this.documentManager.activeTextEditor;
         if (editor && currentCellLens) {

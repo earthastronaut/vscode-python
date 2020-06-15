@@ -620,7 +620,7 @@ export interface ICodeWatcher {
     insertCellBelowPosition(): Promise<void>;
     insertCellBelowCurrent(): Promise<void>;
     insertCellAboveCurrent(): Promise<void>;
-    selectCurrentCell(): Promise<void>;
+    selectCell(): Promise<void>;
     selectCellContents(): Promise<void>;
     runCurrentCell(): Promise<void>;
     runCurrentCellAndAdvance(): Promise<void>;
