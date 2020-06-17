@@ -624,6 +624,7 @@ export interface ICodeWatcher {
     selectCellContents(): Promise<void>;
     goToCellStart(): Promise<void>;
     goToCellEnd(): Promise<void>;
+    moveCellUp(): Promise<void>;
     runCurrentCell(): Promise<void>;
     runCurrentCellAndAdvance(): Promise<void>;
     runSelectionOrLine(activeEditor: TextEditor | undefined): Promise<void>;

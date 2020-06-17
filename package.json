@@ -149,6 +149,11 @@
                 "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
             },
             {
+                "command": "python.datascience.moveCellUp",
+                "key": "ctrl+shift+]",
+                "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
+            },
+            {
                 "command": "python.datascience.deleteCell",
                 "key": "ctrl+shift+d",
                 "when": "editorTextFocus && !editorHasSelection && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused"
@@ -564,6 +569,11 @@
                 "category": "Python"
             },
             {
+                "command": "python.datascience.moveCellUp",
+                "title": "%python.command.python.datascience.moveCellUp.title%",
+                "category": "Python"
+            },
+            {
                 "command": "python.datascience.deleteCell",
                 "title": "%python.command.python.datascience.deleteCell.title%",
                 "category": "Python"
@@ -874,6 +884,11 @@
                 },
                 {
                     "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
+                    "command": "python.datascience.moveCellUp",
+                    "group": "Python2"
+                },
+                {
+                    "when": "editorFocus && editorLangId == python && python.datascience.hascodecells && python.datascience.featureenabled && !notebookEditorFocused",
                     "command": "python.datascience.deleteCell",
                     "group": "Python2"
                 },
@@ -1064,6 +1079,12 @@
                 {
                     "command": "python.datascience.goToCellEnd",
                     "title": "%python.command.python.datascience.goToCellEnd.title%",
+                    "category": "Python",
+                    "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
+                },
+                {
+                    "command": "python.datascience.moveCellUp",
+                    "title": "%python.command.python.datascience.moveCellUp.title%",
                     "category": "Python",
                     "when": "python.datascience.hascodecells && python.datascience.featureenabled && python.datascience.ispythonornativeactive"
                 },

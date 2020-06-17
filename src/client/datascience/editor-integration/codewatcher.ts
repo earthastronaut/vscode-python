@@ -418,13 +418,6 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
-    public async moveCellUp(): Promise<void> {
-        const cellLensIndex = this.getCellLensIndex();
-        if (!cellLensIndex) {
-            return Promise.resolve();
-        }
-    }
-
     public async selectCell(): Promise<void> {
         const currentCellLens = this.getCellLens();
         const editor = this.documentManager.activeTextEditor;
@@ -474,6 +467,44 @@ export class CodeWatcher implements ICodeWatcher {
         }
     }
 
+    public async moveCellUp(position?: Position): Promise<void> {
+        const cellLensIndex = this.getCellLensIndex(position);
+        if (cellLensIndex !== undefined) {
+            return this.swapCells(cellLensIndex, true);
+        }
+    }
+
+    private async swapCells(cellLensIndex: number, withAbove: boolean): Promise<void> {
+        if (withAbove && cellLensIndex === 0) {
+            // first cell can't be moved above
+            return Promise.resolve();
+        } else if (!withAbove && cellLensIndex === this.codeLenses.length - 1) {
+            // last cell can't be move below
+            return Promise.resolve();
+        }
+        const editor = this.documentManager.activeTextEditor;
+        if (editor) {
+            const cellLens = this.codeLenses[cellLensIndex];
+            let aboveCellLens = cellLens;
+            let belowCellLens = cellLens;
+            if (withAbove) {
+                aboveCellLens = this.codeLenses[cellLensIndex - 1];
+            } else {
+                belowCellLens = this.codeLenses[cellLensIndex + 1];
+            }
+
+            const aboveCellText = editor.document.getText(aboveCellLens.range);
+            const belowCellText = editor.document.getText(belowCellLens.range);
+            const fullText = `${belowCellText}\n${aboveCellText}`;
+            const fullRange = new Range(aboveCellLens.range.start, belowCellLens.range.end);
+
+            editor.edit(async (editBuilder) => {
+                editBuilder.replace(fullRange, fullText);
+                const newPosition = new Position(aboveCellLens.range.start.line + 1, 0);
+                editor.selection = new Selection(newPosition, newPosition);
+            });
+        }
+    }
     private async ensureMinCellLength(cellLensIndex: number): Promise<boolean | void> {
         const cellLens = this.codeLenses[cellLensIndex];
         if (cellLens.range.start.line === cellLens.range.end.line) {
